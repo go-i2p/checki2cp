@@ -2,8 +2,8 @@ package util
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 )
 
@@ -13,7 +13,7 @@ import (
 // to add support once I get some more time to test and research it.
 func GetFirewallPort() (string, error) {
 	log.Println(I2P_ASUSER_HOME_LOCATION)
-	file, err := ioutil.ReadFile(I2P_ASUSER_HOME_LOCATION + "/router.config")
+	file, err := os.ReadFile(I2P_ASUSER_HOME_LOCATION + "/router.config")
 	if err != nil {
 		return "", err
 	}
@@ -24,5 +24,5 @@ func GetFirewallPort() (string, error) {
 			return strings.Replace(line, "i2np.udp.port=", "", -1), nil
 		}
 	}
-	return "", fmt.Errorf("Improperly formed router.config file")
+	return "", fmt.Errorf("improperly formed router.config file")
 }

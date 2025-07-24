@@ -15,6 +15,8 @@ var (
 	LINUX_SYSTEM_LOCATION []string = []string{"/usr/bin/i2prouter", "/usr/sbin/i2prouter"}
 	// I2PD_LINUX_SYSTEM_LOCATION is the default location of the I2Pd router on Linux
 	I2PD_LINUX_SYSTEM_LOCATION []string = []string{"/usr/sbin/i2pd", "/usr/bin/i2pd"}
+	// I2PD_LINUX_USER_LOCATION is the default location of the I2Pd router on Linux
+	I2PD_LINUX_USER_LOCATION string = Inithome("/.i2pd")
 	// I2P_ASUSER_HOME_LOCATION This is the path to the default I2P config directory when running as a user
 	I2P_ASUSER_HOME_LOCATION string = Inithome(Home())
 	// HOME_DIRECTORY_LOCATION can use config/run from a user's $HOME directory, this is the path to that router

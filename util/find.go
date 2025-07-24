@@ -20,6 +20,10 @@ func FindI2PIsInstalledDefaultLocation() (string, error) {
 		log.Println("Linux i2pd router detected")
 		return I2PD_LINUX_SYSTEM_LOCATION[1], nil
 	}
+	if CheckFileExists(I2PD_LINUX_USER_LOCATION) {
+		log.Println("Linux i2pd router detected")
+		return I2PD_LINUX_USER_LOCATION, nil
+	}
 	if CheckFileExists(WINDOWS_DEFAULT_LOCATION) {
 		log.Println("Windows i2p router detected")
 		return WINDOWS_DEFAULT_LOCATION, nil

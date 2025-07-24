@@ -1,7 +1,7 @@
 package getmeanetdb
 
 import (
-	"fmt"
+	"errors"
 	"log"
 	"os"
 	"path/filepath"
@@ -31,20 +31,20 @@ func WhereIsTheConfigDir() (string, error) {
 	case util.WINDOWS_DEFAULT_LOCATION:
 		var env string
 		if env = os.Getenv("APPDATA"); env == "" {
-			return "", fmt.Errorf("Could not find local appdata path")
+			return "", errors.New("could not find local appdata path")
 		} else {
 			if env = os.Getenv("LOCALAPPDATA"); env == "" {
-				return "", fmt.Errorf("Could not find local appdata path")
+				return "", errors.New("could not find local appdata path")
 			}
 		}
 		return filepath.Join(env, "I2P"), nil
 	case util.I2PD_WINDOWS_DEFAULT_LOCATION:
 		var env string
 		if env = os.Getenv("APPDATA"); env == "" {
-			return "", fmt.Errorf("Could not find local appdata path")
+			return "", errors.New("could not find local appdata path")
 		} else {
 			if env = os.Getenv("LOCALAPPDATA"); env == "" {
-				return "", fmt.Errorf("Could not find local appdata path")
+				return "", errors.New("could not find local appdata path")
 			}
 		}
 		return filepath.Join(env, "i2pd"), nil
@@ -56,6 +56,8 @@ func WhereIsTheConfigDir() (string, error) {
 		return "/var/lib/i2pd/", nil
 	case util.I2PD_LINUX_SYSTEM_LOCATION[1]:
 		return "/var/lib/i2pd/", nil
+	case util.I2PD_LINUX_USER_LOCATION:
+		return util.I2PD_LINUX_USER_LOCATION, nil
 	case util.I2P_ASUSER_HOME_LOCATION:
 		return util.I2P_ASUSER_HOME_LOCATION, nil
 	case util.HOME_DIRECTORY_LOCATION:
@@ -63,5 +65,5 @@ func WhereIsTheConfigDir() (string, error) {
 	case util.OSX_DEFAULT_LOCATION:
 		return util.I2P_ASUSER_HOME_LOCATION, nil
 	}
-	return "", fmt.Errorf("Could not find local I2P configuration directory")
+	return "", errors.New("could not find local I2P configuration directory")
 }
