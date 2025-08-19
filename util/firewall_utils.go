@@ -1,3 +1,4 @@
+// firewall_utils.go
 package util
 
 import (
@@ -6,6 +7,9 @@ import (
 	"log"
 	"strings"
 )
+
+// Firewall Configuration Functions
+// All functions moved from: firewall.go (non-platform-specific)
 
 // GetFirewallPort finds the configured UDP port of your I2P router to help
 // configure firewalls. It does this by finding the router.config and reading

@@ -1,8 +1,12 @@
+// launcher_utils.go
 package util
 
 import (
 	"log"
 )
+
+// Launcher Detection Functions
+// All functions moved from: launch.go (non-platform-specific)
 
 // checkI2PdRouterInstallation checks for i2pd router installations on Windows and Linux.
 func checkI2PdRouterInstallation() bool {

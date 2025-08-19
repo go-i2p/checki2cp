@@ -1,3 +1,4 @@
+// launcher.go
 package checki2p
 
 import (
@@ -12,6 +13,7 @@ import (
 // ConditionallyLaunchI2P If an already-installed I2P router is present, then
 // make sure that it is started, i.e. launch the router *only* if it is not
 // already running.
+// Moved from: launch.go (non-platform-specific)
 func ConditionallyLaunchI2P() (bool, error) {
 	log.Println("Checking if I2P is installed at the default location.")
 	ok, err := util.FindI2PIsInstalledDefaultLocation()
@@ -38,6 +40,7 @@ func ConditionallyLaunchI2P() (bool, error) {
 // This function is used by ConditionallyLaunchI2P to start the router if it is not already running.
 // it returns a boolean value indicating whether the router was started successfully or not.
 // it also returns an error if the router could not be started.
+// Moved from: launch.go (non-platform-specific)
 func LaunchI2P(path string) (bool, error) {
 	log.Println("Looking for an I2P router to start")
 	if strings.HasSuffix(path, "i2prouter") || strings.HasSuffix(path, "i2prouter.exe") || strings.HasSuffix(path, "i2psvc") || strings.HasSuffix(path, "i2psvc.exe") {

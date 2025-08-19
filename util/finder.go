@@ -1,9 +1,13 @@
+// finder.go
 package util
 
 import (
 	"fmt"
 	"log"
 )
+
+// Router Detection Functions
+// All functions moved from: find.go (non-platform-specific)
 
 // checkI2PDRouterLocations checks for I2PD (i2pd) router installations
 func checkI2PDRouterLocations() (string, bool) {

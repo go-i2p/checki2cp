@@ -1,3 +1,4 @@
+// checker.go
 package checki2p
 
 import (
@@ -8,12 +9,9 @@ import (
 	go_i2cp "github.com/go-i2p/go-i2cp"
 )
 
-func i2pdArgs() ([]string, error) {
-	return []string{""}, nil
-}
-
 // CheckI2PIsRunning is frequently the only thing I need a reliable, non-SAM
 // way to test at runtime.
+// Moved from: checki2cp.go (non-platform-specific)
 func CheckI2PIsRunning() (bool, error) {
 	log.Println("Trying to discover a running I2P router")
 	if checksam.CheckSAMAvailable("127.0.0.1:7656") {
@@ -31,6 +29,7 @@ func CheckI2PIsRunning() (bool, error) {
 
 // CheckI2CPConnection is determines if I2CP is available on the TCP port
 // usually used by I2P routers(7654).
+// Moved from: checki2cp.go (non-platform-specific)
 func CheckI2CPConnection() (bool, error) {
 	log.Println("Trying to discover a running I2P router")
 	client := go_i2cp.NewClient(nil)

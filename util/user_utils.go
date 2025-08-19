@@ -1,3 +1,4 @@
+// user_utils.go
 package util
 
 import (
@@ -6,7 +7,10 @@ import (
 	"os/user"
 )
 
-// UserFind makes sure that we never mis-identify the user account because of
+// User and Authentication Functions
+// All functions moved from: user.go (non-platform-specific)
+
+// UserFind makes sure that we never misidentify the user account because of
 // sudo
 func UserFind() string {
 	if os.Geteuid() == 0 {
