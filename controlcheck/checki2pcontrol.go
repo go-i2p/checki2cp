@@ -1,8 +1,6 @@
 package checki2pcontrol
 
 import (
-	"log"
-
 	"github.com/go-i2p/go-i2pcontrol"
 )
 
@@ -10,38 +8,52 @@ import (
 // it returns true if the command is successful and false, with an error,
 // if not.
 func CheckI2PControlEcho(host, port, password, path string) (bool, error) {
+	host = normalizeHost(host)
+	port = normalizePort(port)
+
+	// Try primary connection configuration
+	if err := attemptI2PControlConnection(host, port, password, path); err == nil {
+		return true, nil
+	}
+
+	// Try fallback configuration
+	if err := attemptI2PControlConnection(host, "7657", password, "jsonrpc"); err == nil {
+		return true, nil
+	}
+
+	// Both attempts failed
+	return false, attemptI2PControlConnection(host, "7657", password, "jsonrpc")
+}
+
+// normalizeHost returns the default host if the provided host is empty.
+func normalizeHost(host string) string {
 	if host == "" {
-		host = "127.0.0.1"
+		return "127.0.0.1"
 	}
+	return host
+}
+
+// normalizePort returns the default port if the provided port is empty.
+func normalizePort(port string) string {
 	if port == "" {
-		port = "7650"
+		return "7650"
 	}
+	return port
+}
+
+// attemptI2PControlConnection tries to establish an I2PControl connection and perform an echo test.
+func attemptI2PControlConnection(host, port, password, path string) error {
 	i2pcontrol.Initialize(host, port, path)
-	var finalError error
+
 	if _, err := i2pcontrol.Authenticate(password); err != nil {
-		finalError = err
+		return err
 	}
+
 	if _, err := i2pcontrol.Echo("Hello I2PControl"); err != nil {
-		finalError = err
+		return err
 	}
-	if finalError == nil {
-		return true, nil
-	}
-	log.Printf("Error: %v", finalError)
-	finalError = nil
-	port = "7657"
-	path = "jsonrpc"
-	i2pcontrol.Initialize(host, port, path)
-	if _, err := i2pcontrol.Authenticate(password); err != nil {
-		finalError = err
-	}
-	if _, err := i2pcontrol.Echo("Hello I2PControl"); err != nil {
-		finalError = err
-	}
-	if finalError == nil {
-		return true, nil
-	}
-	return false, finalError
+
+	return nil
 }
 
 // GetDefaultI2PControlPath probes default locations for the I2PControl API, returning
@@ -49,35 +61,24 @@ func CheckI2PControlEcho(host, port, password, path string) (bool, error) {
 // and an error
 func GetDefaultI2PControlPath(password ...string) (string, string, string, error) {
 	host := "127.0.0.1"
-	port := "7650"
-	pass := ""
-	if len(password) > 0 {
-		pass = password[0]
-	} else {
-		pass = "itoopie"
-	}
-	// use the provided password parameter
-	path := ""
-	i2pcontrol.Initialize(host, port, path)
-	var finalError error
-	if _, err := i2pcontrol.Authenticate(pass); err != nil {
-		finalError = err
-	}
-	if _, err := i2pcontrol.Echo("Hello I2PControl"); err != nil {
-		finalError = err
-	}
-	if finalError == nil {
+	pass := extractPassword(password)
+
+	// Try primary configuration
+	port, path := "7650", ""
+	if err := attemptI2PControlConnection(host, port, pass, path); err == nil {
 		return host, port, path, nil
 	}
-	finalError = nil
-	port = "7657"
-	path = "jsonrpc"
-	i2pcontrol.Initialize(host, port, path)
-	if _, err := i2pcontrol.Authenticate(pass); err != nil {
-		finalError = err
+
+	// Try fallback configuration
+	port, path = "7657", "jsonrpc"
+	err := attemptI2PControlConnection(host, port, pass, path)
+	return host, port, path, err
+}
+
+// extractPassword returns the first password from the variadic parameter or default password.
+func extractPassword(password []string) string {
+	if len(password) > 0 {
+		return password[0]
 	}
-	if _, err := i2pcontrol.Echo("Hello I2PControl"); err != nil {
-		finalError = err
-	}
-	return host, port, path, finalError
+	return "itoopie"
 }
