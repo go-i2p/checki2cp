@@ -2,6 +2,6 @@
 
 package util
 
-func IsHeadless() bool {
-	return true
+func IsHeadless() (bool, error) {
+	return true, nil
 }
