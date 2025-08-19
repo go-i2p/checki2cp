@@ -20,8 +20,6 @@ Directories
   parse the errors to know what is going on.
 - **./i2cpcheck** - A terminal application which probes for an I2P router by looking in a default location. It also checks the
   $PATH, or by probing I2CP.
-- **./i2pdbundle** - A set of tools and libraries for embedding an I2Pd router in a Go application.
-  It then installs the router to a location under the application's control.
 - **./proxycheck** - A tool for determining the presence of an I2P router. It does this by making a request to "proxy.i2p" by
   default) over an I2P HTTP Proxy.
 - **./samcheck** - A tool for determining the presence of an I2P router. It does this by performing a brief interaction with the SAM
